@@ -1,0 +1,12 @@
+server {
+  listen 80 default_server;
+  listen [::]:80 default_server;
+
+  server_name localdomain;
+
+  location / {
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_pass http://simple-reverse-proxy.example.docker:8081/;
+  }
+}

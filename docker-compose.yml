@@ -1,0 +1,22 @@
+version: '3.7'
+services:
+  nginx-main:
+    image: nginx:stable-alpine
+    volumes:
+      - ./http.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./sites:/sites:ro
+      - static:/static:ro
+    ports:
+      - "8080:80"
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external:
+      name: docker.example.simple-reverse-proxy
+
+volumes:
+  static:
+    external:
+      name: docker.exaple.simple-static-files

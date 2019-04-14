@@ -1,0 +1,30 @@
+#! /bin/sh
+
+volumeName=docker.exaple.simple-static-files
+content="$(pwd)/serve"
+
+if expr $(docker volume ls --quiet --filter="name=$volumeName" | wc --lines) \
+  "<" 1 > /dev/null
+then
+  exists=0
+else
+  exists=1
+fi
+
+case "$exists$1" in
+  0up)
+    docker volume create \
+      -d local-persist \
+      -o mountpoint="$content" \
+      --name="$volumeName"
+    ;;
+  1up)
+    echo Volume already up
+    ;;
+  0down)
+    echo Volume already down
+    ;;
+  1down)
+    docker volume rm "$volumeName"
+    ;;
+esac

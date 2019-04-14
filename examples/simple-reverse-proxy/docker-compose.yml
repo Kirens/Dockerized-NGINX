@@ -1,0 +1,22 @@
+version: '3.7'
+services:
+  api:
+    image: node:lts-alpine
+    expose:
+      - 8081
+    volumes:
+      - ./app.js:/app.js
+    command: node /app.js
+    networks:
+      public:
+        aliases:
+          - simple-reverse-proxy.example.docker
+
+networks:
+  default:
+    external:
+      name: none
+
+  public:
+    driver: bridge
+    name: docker.example.simple-reverse-proxy
